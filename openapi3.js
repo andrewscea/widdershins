@@ -405,7 +405,7 @@ function getResponses(data) {
                 entry.type = contentType.schema.type;
                 entry.schema = data.translations.schemaInline;
             }
-            if (contentType.schema && contentType.schema["x-widdershins-oldRef"]) {
+            if (contentType.schema && contentType.schema["x-widdershins-oldRef"] && contentType.schema["x-widdershins-oldRef"].startsWith('#/components/')) {
                 let schemaName = contentType.schema["x-widdershins-oldRef"].replace('#/components/schemas/','');
                 entry.schema = '['+schemaName+'](#schema'+schemaName.toLowerCase()+')';
                 entry.$ref = true;
@@ -670,7 +670,7 @@ function convertInner(api, options, callback) {
 
 function convert(api, options, callback) {
     if (options.resolve) {
-        swagger2openapi.convertObj(api, {resolve:true,source:options.source}, function(err, sOptions) {
+        swagger2openapi.convertObj(api, {resolve:true,source:options.source,verbose:options.verbose}, function(err, sOptions) {
         if (err) {
             console.error(err.message);
         }
